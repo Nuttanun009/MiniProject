@@ -28,7 +28,7 @@ public class main {
 		case "1" : CPU(); break;
 		case "2" : RAM(); break;
 		case "3" : Storage(); break;
-		case "4" :CPU(); RAM(); Storage(); break;
+		case "4" : CPU(); RAM(); Storage(); break;
 					
 		default : break;
 		
@@ -113,7 +113,7 @@ public class main {
 		fw.close();
 		long endWrite = System.currentTimeMillis();
 		double writeTotle = (double) (endWrite - startWrite) / 1000d;
-		System.out.format("Execution time is %.6f", writeTotle);
+		System.out.format("Execution time writer is %.6f", writeTotle);
 		System.out.println(" seconds");
 		
 		String text = "";
@@ -131,7 +131,7 @@ public class main {
 		}
 		long endRead = System.currentTimeMillis();
 		double readTotle = (double) (endRead - startRead) / 1000d;
-		System.out.format("Execution time is %.6f", readTotle);
+		System.out.format("Execution time read is %.6f", readTotle);
 		System.out.println(" seconds");
 
 
