@@ -35,106 +35,108 @@ public class main {
 		}
 
 	}
-//CPU tester
-	static void CPU() {
-		int row = 1000;
-		int column = 1000;
+	
+	//CPU performance
+		static void CPU() {
+			int row = 1000;
+			int column = 1000;
 
-		int a[][] = new int[row][column];
-		int b[][] = new int[row][column];
+			int a[][] = new int[row][column];
+			int b[][] = new int[row][column];
 
-		for (int i = 0; i < row; i++) {
-			for (int j = 0; j < column; j++) {
-				a[i][j] = (int) (Math.random() * 10);
-				b[i][j] = (int) (Math.random() * 10);
-			}
-		}
-
-		long start = System.currentTimeMillis();
-
-		int val = 0;
-
-		for (int row_a = 0; row_a < row; row_a++) {
-			for (int column_b = 0; column_b < column; column_b++) {
-				for (int k = 0; k < row; k++) {
-					val += a[row_a][k] * b[k][column_b];
+			for (int i = 0; i < row; i++) {
+				for (int j = 0; j < column; j++) {
+					a[i][j] = (int) (Math.random() * 10);
+					b[i][j] = (int) (Math.random() * 10);
 				}
-				val = 0;
-			}
-		}
-
-		long end = System.currentTimeMillis();
-		double CPUTotle = (double) (end - start) / 1000d;
-		System.out.format("Execution time is %.6f", CPUTotle);
-		System.out.println(" seconds");
-
-	}
-
-	static void RAM() throws Exception {
-		Vector v = new Vector();
-		long start = System.currentTimeMillis();
-		while (true) {
-			try {
-				byte b[] = new byte[2048576];
-				v.add(b);
-				Runtime rt = Runtime.getRuntime();
-				System.out.println("free memory: " + rt.freeMemory());
-			} catch (Exception e) {
-				e.printStackTrace();
-			} catch (OutOfMemoryError e) {
-				break;
 			}
 
-//	      byte b[] = new byte[1073741824];
+			long start = System.currentTimeMillis();
+
+			int val = 0;
+
+			for (int row_a = 0; row_a < row; row_a++) {
+				for (int column_b = 0; column_b < column; column_b++) {
+					for (int k = 0; k < row; k++) {
+						val += a[row_a][k] * b[k][column_b];
+					}
+					val = 0;
+				}
+			}
+
+			long end = System.currentTimeMillis();
+			double CPUTotle = (double) (end - start) / 1000d;
+			System.out.format("Execution time is %.6f", CPUTotle);
+			System.out.println(" seconds");
 
 		}
-
-		long end = System.currentTimeMillis();
-		double RAMTotle = (double) (end - start) / 1000d;
-		System.out.format("Execution time is %.6f", RAMTotle);
-		System.out.println(" seconds");
-	}
-
-	static void Storage() throws Exception {
-		// Accept a string
-		String str = "File Handling in Java using " + " FileWriter and FileReader";
-
-		// attach a file to FileWriter
-		FileWriter fw = new FileWriter("output.txt");
-
-		// read character wise from string and write
-		// into FileWriter
-		Random random = new Random();
-		long startWrite = System.currentTimeMillis();
-		for (int i = 0; i < 236955220; i++) {
-			fw.write("02345790");
-		}
-		// close the file
-		fw.close();
-		long endWrite = System.currentTimeMillis();
-		double writeTotle = (double) (endWrite - startWrite) / 1000d;
-		System.out.format("Execution time writer is %.6f", writeTotle);
-		System.out.println(" seconds");
 		
-		String text = "";
-		long startRead = System.currentTimeMillis();
-		try {
-			text = new String(Files.readAllBytes(Paths.get("output.txt")));
-		} catch (IOException e) {
-			e.printStackTrace();
+		//ram performance
+		static void RAM() throws Exception {
+			Vector v = new Vector();
+			long start = System.currentTimeMillis();
+			while (true) {
+				try {
+					byte b[] = new byte[2048576];
+					v.add(b);
+//					Runtime rt = Runtime.getRuntime();
+//					System.out.println("free memory: " + rt.freeMemory());
+				} catch (Exception e) {
+					e.printStackTrace();
+				} catch (OutOfMemoryError e) {
+					break;
+				}
+
+//		      byte b[] = new byte[1073741824];
+
+			}
+
+			long end = System.currentTimeMillis();
+			double RAMTotle = (double) (end - start) / 1000d;
+			System.out.format("Execution time is %.6f", RAMTotle);
+			System.out.println(" seconds");
 		}
-		catch (Exception e) {
-            e.printStackTrace();
-        } 
-		catch (OutOfMemoryError e) {
+		
+		//w/r storage performance
+		static void Storage() throws Exception {
 			
+
+			// attach a file to FileWriter
+			FileWriter fw = new FileWriter("output.txt");
+
+			// read character wise from string and write
+			// into FileWriter
+		
+			long startWrite = System.currentTimeMillis();
+			for (int i = 0; i < 236955220; i++) {
+				fw.write("02345790");
+			}
+			// close the file
+			fw.close();
+			long endWrite = System.currentTimeMillis();
+			double writeTotle = (double) (endWrite - startWrite) / 1000d;
+			System.out.format("Execution time writer is %.6f", writeTotle);
+			System.out.println(" seconds");
+			
+			String text = "";
+			long startRead = System.currentTimeMillis();
+			try {
+				text = new String(Files.readAllBytes(Paths.get("output.txt")));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			catch (Exception e) {
+	            e.printStackTrace();
+	        } 
+			catch (OutOfMemoryError e) {
+				
+			}
+			long endRead = System.currentTimeMillis();
+			double readTotle = (double) (endRead - startRead) / 1000d;
+			System.out.format("Execution time read is %.6f", readTotle);
+			System.out.println(" seconds");
+
+
 		}
-		long endRead = System.currentTimeMillis();
-		double readTotle = (double) (endRead - startRead) / 1000d;
-		System.out.format("Execution time read is %.6f", readTotle);
-		System.out.println(" seconds");
-
-
-	}
 
 }
