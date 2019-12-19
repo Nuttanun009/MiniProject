@@ -34,7 +34,7 @@ public class main {
 				case "3" : Storage(); break;
 				case "4" : CPU(); RAM(); Storage(); Totle(); break;	
 				case "e" : break;
-				default : System.out.println("Pleas enter your number"); break;
+				default : System.out.println("Please enter your number"); break;
 			}
 			System.out.println("------------------------------------------");
 		}while(!option.equals("e")) ;
