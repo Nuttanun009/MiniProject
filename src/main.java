@@ -1,22 +1,25 @@
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.util.Arrays;
+
 import java.util.Vector;
+import java.util.stream.Stream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Random;
 import java.util.Scanner;
-import java.io.FileNotFoundException;
+import java.io.File;
+
 
 public class main {
-	public static double valueCPU;
-	public static double valueRAM;
-	public static double valueStorage;
+	static double cpuScore;
+	static double ramScore;
+	static double storageWriteScoreTotal;
+	static double storageReadScoreTotal;
+	static double storageScoreTotal;
 	public static String option;
+	static String text;
 	public static void main(String[] args) throws Exception {
-		System.out.println("------------------------------------------");
+		System.out.println("-----------------------------------------");
 		do{		
 			Scanner sc = new Scanner(System.in);
 			System.out.println("Please select an option: \n"+
@@ -32,122 +35,152 @@ public class main {
 				case "1" : CPU(); break;
 				case "2" : RAM(); break;
 				case "3" : Storage(); break;
-				case "4" : CPU(); RAM(); Storage(); Totle(); break;	
+				case "4" : System.out.println("\n******************************************");
+						   CPU(); RAM(); Storage(); Total(); 
+						   System.out.println("******************************************"); break;	
 				case "e" : break;
-				default : System.out.println("Please enter your number"); break;
+				default : System.out.println("//Please enter your option number again.//"); break;
 			}
-			System.out.println("------------------------------------------");
+			System.out.println("\n------------------------------------------");
 		}while(!option.equals("e")) ;
-		System.out.println("Exit");
+		System.out.println("|                  Exit                  |");
+		System.out.println("------------------------------------------");
 	}
 	//CPU performance
 	public static void CPU() {
-		int row = 1000;
-		int column = 1000;
+	   int row = 1000;
+	   int column = 1000;
+	   
+	   
 
-		int a[][] = new int[row][column];
-		int b[][] = new int[row][column];
+	   int a[][] = new int[row][column];
+	   int b[][] = new int[row][column];
 
-		for (int i = 0; i < row; i++) {
-			for (int j = 0; j < column; j++) {
-				a[i][j] = (int) (Math.random() * 10);
-				b[i][j] = (int) (Math.random() * 10);
-			}
-		}
+	   for (int i = 0; i < row; i++) {
+	    for (int j = 0; j < column; j++) {
+	     a[i][j] = (int) (Math.random() * 10);
+	     b[i][j] = (int) (Math.random() * 10);
+	    }
+	   }
 
-		long start = System.currentTimeMillis();
+	   long start = System.currentTimeMillis();
 
-		int val = 0;
+	   int val = 0;
 
-		for (int row_a = 0; row_a < row; row_a++) {
-			for (int column_b = 0; column_b < column; column_b++) {
-				for (int k = 0; k < row; k++) {
-					val += a[row_a][k] * b[k][column_b];
-				}
-				val = 0;
-			}
-		}
+	   for (int row_a = 0; row_a < row; row_a++) {
+	    for (int column_b = 0; column_b < column; column_b++) {
+	     for (int k = 0; k < row; k++) {
+	      val += a[row_a][k] * b[k][column_b];
+	     }
+	     val = 0;
+	    }
+	   }
 
-		long end = System.currentTimeMillis();
-		double CPUTotle = (double) (end - start) / 1000d;
-		System.out.format("Execution time CPU is %.6f", CPUTotle);
-		System.out.println(" seconds");
-		
-		int scoreValue = 10;
-		valueCPU = scoreValue - CPUTotle;
-	}
-	//ram performance
-	public static void RAM() throws Exception {
-		Vector v = new Vector();
-		long start = System.currentTimeMillis();
-		while (true) {
-			try {
-				byte b[] = new byte[2048576];
-				v.add(b);
-//				Runtime rt = Runtime.getRuntime();
-//				System.out.println("free memory: " + rt.freeMemory());
-			} catch (Exception e) {
-				e.printStackTrace();
-			} catch (OutOfMemoryError e) {
-				break;
-			}
+	   long end = System.currentTimeMillis();
+	   double CPUTotleTime = (double) (end - start) / 1000d;
+	   System.out.format("CPUExecution time is %.6f", CPUTotleTime);
+	   System.out.println(" seconds");
+	   
+	   //Scoring
+	   cpuScore = 50*100/CPUTotleTime;
+	   System.out.println("Your cpu score is: " + (int)cpuScore);
+	   
+	   
+	  }
+	  
+	 //ram performance
+	 public static void RAM() throws Exception {
+	   Vector v = new Vector();
+	   long start = System.currentTimeMillis();
+	   while (true) {
+	    try {
+	     byte b[] = new byte[2048576];
+	     v.add(b);
 
-//	      byte b[] = new byte[1073741824];
+	    } catch (Exception e) {
+	     e.printStackTrace();
+	    } catch (OutOfMemoryError e) {
+	     break;
+	    }
 
-		}
 
-		long end = System.currentTimeMillis();
-		double RAMTotle = (double) (end - start) / 1000d;
-		System.out.format("Execution time RAM is %.6f", RAMTotle);
-		System.out.println(" seconds");
-		
-		int scoreValue = 10;
-		valueRAM = scoreValue - RAMTotle;
-	}
-	//w/r storage performance
-	public static void Storage() throws Exception {
-		
-		// attach a file to FileWriter
-		FileWriter fw = new FileWriter("output.txt");
 
-		// read character wise from string and write
-		// into FileWriter
-		long startWrite = System.currentTimeMillis();
-		for (int i = 0; i < 236955220; i++) {
-			fw.write("02345790");
-		}
-		// close the file
-		fw.close();
-		long endWrite = System.currentTimeMillis();
-		double writeTotle = (double) (endWrite - startWrite) / 1000d;
-		System.out.format("Execution time writer is %.6f", writeTotle);
-		System.out.println(" seconds");
-		
-		String text = "";
-		long startRead = System.currentTimeMillis();
-		try {
-			text = new String(Files.readAllBytes(Paths.get("output.txt")));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		catch (Exception e) {
-            e.printStackTrace();
-        } 
-		catch (OutOfMemoryError e) {
-			
-		}
-		long endRead = System.currentTimeMillis();
-		double readTotle = (double) (endRead - startRead) / 1000d;
-		System.out.format("Execution time read is %.6f", readTotle);
-		System.out.println(" seconds");
-		
-		int scoreValue = 100;
-		valueStorage = scoreValue - (writeTotle + readTotle);
+	   }
 
-	}
-	public static void Totle() {
-		double Totle = valueCPU + valueRAM + valueStorage;
-		System.out.println("Totle: " + Totle);
-	}
+	   long end = System.currentTimeMillis();
+	   double RAMTotleTime = (double) (end - start) / 1000d;
+	   System.out.format("RamExecution time is %.6f", RAMTotleTime);
+	   System.out.println(" seconds");
+	   
+	   //Scoring
+	   ramScore = 50*100/RAMTotleTime;
+	   System.out.println("Your ram score is: " + (int)ramScore);
+	   
+	   
+	  }
+	  
+	  // w/r storage performance
+	  public static void Storage() throws Exception {
+	   
+
+	   // Writing performance
+	   FileWriter fw = new FileWriter("output.txt");
+
+	   // write 5 GB of text file
+	   long startWrite = System.currentTimeMillis();
+	   for (int i = 0; i < 236955220; i++) {
+	    fw.write("0123457901234567890123");
+	   }
+	   // close the file
+	   fw.close();
+	   
+	   long endWrite = System.currentTimeMillis();
+	   double writeTotleTime = (double) (endWrite - startWrite) / 1000d;
+	   System.out.format("Execution time writing is %.6f", writeTotleTime);
+	   System.out.println(" seconds");
+	   
+	   //Scoring
+	   storageWriteScoreTotal = 50*100/writeTotleTime;
+	   System.out.println("Your StorageWritting score is: " + (int)storageWriteScoreTotal);
+	   
+	   //reading performance
+	   text = "";
+	   long startRead = System.currentTimeMillis();
+	   StringBuilder contentBuilder = new StringBuilder();
+	   try(Stream<String> stream = Files.lines( Paths.get("output.txt"), StandardCharsets.UTF_8)) {
+	    stream.forEach(s -> contentBuilder.append(s).append("\n"));
+
+	    
+	   } catch (IOException e) {
+	    
+	   }
+	   catch (Exception e) {
+	             
+	         } 
+	   catch (OutOfMemoryError e) {
+	    
+	   }
+	   long endRead = System.currentTimeMillis();
+	   double readTotleTime = (double) (endRead - startRead) / 1000d;
+	   System.out.format("Execution time reading is %.6f", readTotleTime);
+	   System.out.println(" seconds");
+	   
+	   //Scoring
+	   storageReadScoreTotal = 50*100/readTotleTime;
+	   System.out.println("Your StorageReading score is: " + (int)storageReadScoreTotal);
+	   
+	   //delete text file
+	   File file = new File("output.txt"); 
+	   file.delete();
+
+	 }
+	  	  
+	  // Total score
+	  public static void Total() {
+		double Total = cpuScore + ramScore + storageWriteScoreTotal + storageReadScoreTotal;
+		System.out.println();
+		System.out.printf("Total: %.2f" , Total);
+		System.out.println();
+	 }
 
 }
